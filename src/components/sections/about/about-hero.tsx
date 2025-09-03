@@ -20,7 +20,7 @@ const values = [
     description: 'Built on multi-stakeholder collaboration — convening academia, startups, governments, and citizens.',
     icon: <Users className="w-6 h-6 text-brand-digital" />,
   },
-  {
+  {/* Background Pattern */
     title: 'Innovation-Driven',
     description: 'Focused on setting new thresholds through innovative solutions and sustainable adoption.',
     icon: <Lightbulb className="w-6 h-6 text-brand-rust-light" />,

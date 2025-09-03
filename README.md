@@ -201,3 +201,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Built with ❤️ by the Threshold team**
+
+## 🚀 CI/CD Pipeline Status
+- ✅ **Development Environment:** Local development setup complete
+- ✅ **Staging Environment:** Automatic deployment from `develop` branch  
+- ✅ **Production Environment:** Automatic deployment from `main` branch
+- 🔄 **Next Step:** Add GitHub secrets to complete automation
+
+**Live Production URL:** https://threshold-4gezjdo9q-bse01s-projects.vercel.app
+
