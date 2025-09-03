@@ -15,8 +15,8 @@ export function HeroSection() {
         <div className="absolute bottom-0 left-1/2 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse animation-delay-4000" />
       </div>
       
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col items-center text-center max-w-5xl mx-auto space-y-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center text-center max-w-5xl mx-auto space-y-6 sm:space-y-8">
           <motion.div 
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -30,7 +30,7 @@ export function HeroSection() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900"
           >
             We build the{' '}
             <span 
@@ -58,7 +58,7 @@ export function HeroSection() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="text-lg md:text-xl text-muted-foreground max-w-3xl"
+            className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl px-4 sm:px-0"
           >
             A multi-sectoral technology lab designing inclusive solutions that set new thresholds for digital adoption across governance, commerce, and innovation.
           </motion.p>
@@ -67,13 +67,13 @@ export function HeroSection() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4"
+            className="flex flex-col sm:flex-row gap-4 w-full max-w-md sm:max-w-none mx-auto"
           >
-            <Button size="lg" className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg">
+            <Button size="lg" className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg w-full sm:w-auto">
               Explore Our Work
               <ArrowRight className="w-4 h-4" />
             </Button>
-            <Button size="lg" className="gap-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg">
+            <Button size="lg" className="gap-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg w-full sm:w-auto">
               Learn Our Story
             </Button>
           </motion.div>

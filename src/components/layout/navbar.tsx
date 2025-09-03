@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   NavigationMenu,
@@ -10,8 +11,10 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { Building2, Brain, Code2, Laptop2, LayoutGrid, School2, Target, Users, Lightbulb } from 'lucide-react';
+import { Building2, Brain, Code2, Laptop2, LayoutGrid, School2, Target, Users, Lightbulb, Menu } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 
 const navigation = [
   {
@@ -86,6 +89,8 @@ const navigation = [
 ];
 
 export function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <motion.header 
       initial={{ y: -100 }}
@@ -94,16 +99,19 @@ export function Navbar() {
     >
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
             <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 shadow-md group-hover:shadow-lg transition-shadow">
               <Code2 className="w-6 h-6 text-white" />
             </div>
-            <span className="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Threshold Collective
+            <span className="font-bold text-lg sm:text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="hidden sm:inline">Threshold Collective</span>
+              <span className="sm:hidden">Threshold</span>
             </span>
           </Link>
 
-          <div className="flex items-center gap-4">
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-4">
             <ThemeToggle />
             <NavigationMenu>
               <NavigationMenuList>
@@ -153,6 +161,76 @@ export function Navbar() {
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
+          </div>
+
+          {/* Mobile Navigation */}
+          <div className="flex lg:hidden items-center gap-2">
+            <ThemeToggle />
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Toggle menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[350px]">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center space-x-2">
+                    <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 shadow-md">
+                      <Code2 className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      Threshold
+                    </span>
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="mt-6 space-y-4 max-h-[calc(100vh-120px)] overflow-y-auto">
+                  <Link 
+                    href="/" 
+                    className="block px-4 py-2 text-lg font-medium rounded-lg hover:bg-accent transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Home
+                  </Link>
+                  
+                  {navigation.map((nav) => (
+                    <div key={nav.title} className="space-y-2">
+                      <h3 className="px-4 py-2 text-lg font-semibold text-muted-foreground border-b">
+                        {nav.title}
+                      </h3>
+                      <div className="space-y-1 ml-2">
+                        {nav.items.map((item) => (
+                          <Link
+                            key={item.title}
+                            href={item.href}
+                            className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-accent transition-colors"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-muted">
+                              <div className="w-4 h-4 flex items-center justify-center">
+                                {item.icon}
+                              </div>
+                            </div>
+                            <div className="flex-1">
+                              <div className="text-sm font-medium">{item.title}</div>
+                              <div className="text-xs text-muted-foreground line-clamp-2">{item.description}</div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <Link 
+                    href="/contact" 
+                    className="block px-4 py-2 text-lg font-medium rounded-lg hover:bg-accent transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Contact
+                  </Link>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
