@@ -111,7 +111,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
             <NavigationMenu>
               <NavigationMenuList>
@@ -164,12 +164,12 @@ export function Navbar() {
           </div>
 
           {/* Mobile Navigation */}
-          <div className="flex lg:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-2">
             <ThemeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  <Menu className="h-6 w-6" />
+                <Button variant="outline" size="sm" className="border-muted">
+                  <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
