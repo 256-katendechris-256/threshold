@@ -1,0 +1,130 @@
+# GitLab CI/CD Pipeline (Alternative to GitHub Actions)
+
+stages:
+  - install
+  - quality
+  - security
+  - build
+  - deploy-staging
+  - deploy-production
+
+variables:
+  NODE_VERSION: "20"
+  NPM_CONFIG_CACHE: "$CI_PROJECT_DIR/.npm"
+
+# Cache node_modules
+cache:
+  paths:
+    - .npm/
+    - node_modules/
+
+# Install dependencies
+install-dependencies:
+  stage: install
+  image: node:$NODE_VERSION
+  script:
+    - npm ci --cache .npm --prefer-offline
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour
+
+# Code quality checks
+lint-and-typecheck:
+  stage: quality
+  image: node:$NODE_VERSION
+  dependencies:
+    - install-dependencies
+  script:
+    - npm run lint
+    - npx tsc --noEmit
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# Security audit
+security-audit:
+  stage: security
+  image: node:$NODE_VERSION
+  dependencies:
+    - install-dependencies
+  script:
+    - npm audit --audit-level moderate
+    - npx depcheck
+  allow_failure: true
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# Build application
+build-app:
+  stage: build
+  image: node:$NODE_VERSION
+  dependencies:
+    - install-dependencies
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - .next/
+    expire_in: 1 hour
+  variables:
+    NEXT_PUBLIC_FIREBASE_API_KEY: $NEXT_PUBLIC_FIREBASE_API_KEY
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: $NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID: $NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: $NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: $NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    NEXT_PUBLIC_FIREBASE_APP_ID: $NEXT_PUBLIC_FIREBASE_APP_ID
+  only:
+    - main
+    - develop
+
+# Deploy to staging
+deploy-staging:
+  stage: deploy-staging
+  image: node:$NODE_VERSION
+  dependencies:
+    - build-app
+  before_script:
+    - npm install -g vercel
+  script:
+    - vercel --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+    - vercel alias staging-threshold.vercel.app --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+  environment:
+    name: staging
+    url: https://staging-threshold.vercel.app
+  variables:
+    NEXT_PUBLIC_FIREBASE_API_KEY: $STAGING_FIREBASE_API_KEY
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: $STAGING_FIREBASE_AUTH_DOMAIN
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID: $STAGING_FIREBASE_PROJECT_ID
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: $STAGING_FIREBASE_STORAGE_BUCKET
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: $STAGING_FIREBASE_MESSAGING_SENDER_ID
+    NEXT_PUBLIC_FIREBASE_APP_ID: $STAGING_FIREBASE_APP_ID
+  only:
+    - develop
+
+# Deploy to production
+deploy-production:
+  stage: deploy-production
+  image: node:$NODE_VERSION
+  dependencies:
+    - build-app
+  before_script:
+    - npm install -g vercel
+  script:
+    - vercel --prod --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+  environment:
+    name: production
+    url: https://threshold.vercel.app
+  variables:
+    NEXT_PUBLIC_FIREBASE_API_KEY: $PROD_FIREBASE_API_KEY
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: $PROD_FIREBASE_AUTH_DOMAIN
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID: $PROD_FIREBASE_PROJECT_ID
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: $PROD_FIREBASE_STORAGE_BUCKET
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: $PROD_FIREBASE_MESSAGING_SENDER_ID
+    NEXT_PUBLIC_FIREBASE_APP_ID: $PROD_FIREBASE_APP_ID
+  when: manual
+  only:
+    - main

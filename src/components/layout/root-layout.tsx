@@ -1,0 +1,20 @@
+'use client';
+
+import { Navbar } from './navbar';
+import { Footer } from './footer';
+
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
+export function RootLayout({ children }: RootLayoutProps) {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <main className="flex-grow pt-16">
+        {children}
+      </main>
+      <Footer />
+    </div>
+  );
+}
