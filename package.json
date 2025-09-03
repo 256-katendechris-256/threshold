@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "type-check": "tsc --noEmit",
+    "audit:prod": "npm audit --audit-level high --omit=dev",
+    "audit:dev": "npm audit --audit-level moderate",
     "deploy:staging": "./scripts/deploy.sh staging",
     "deploy:production": "./scripts/deploy.sh production",
     "setup:env": "./scripts/setup-environments.sh"
