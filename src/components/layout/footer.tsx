@@ -48,11 +48,20 @@ export function Footer() {
 
           <div>
             <h3 className="text-lg font-semibold mb-4 bg-gradient-to-r from-orange-400 to-blue-400 bg-clip-text text-transparent">Contact</h3>
-            <ul className="space-y-2">
-              <li className="text-sm text-gray-300">East Africa Office</li>
-              <li className="text-sm text-gray-300">Email: info@threshold.co</li>
-              <li className="text-sm text-gray-300">Phone: +254 XXX XXX XXX</li>
-            </ul>
+            <div className="space-y-3">
+              <div className="text-sm text-gray-300">
+                <p className="font-medium text-blue-300 mb-1">Address</p>
+                <p>National Innovation Hub</p>
+                <p>Kampala - Uganda</p>
+                <p>New Portbell Road</p>
+                <p>UICT - Nakawa Campus</p>
+                <p>Kampala</p>
+              </div>
+              <div className="text-sm text-gray-300 pt-2">
+                <p>Email: info@threshold.co</p>
+                <p>Phone: +254 XXX XXX XXX</p>
+              </div>
+            </div>
           </div>
 
           <div>
